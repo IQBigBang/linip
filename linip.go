@@ -73,7 +73,21 @@ func (ini *inifile) parse(measuretime bool) {
 }
 
 func (ini *inifile) getvalue(containername string, varname string) string {
-	return ini.data[containername+"."+varname]
+	return ini.getvaluesh(containername + "." + varname)
+}
+
+//Stands for getvalue Shortened
+func (ini *inifile) getvaluesh(fullname string) string {
+	return ini.data[fullname]
+}
+
+//Is the value set
+func (ini *inifile) isvalue(containername string, varname string) bool {
+	return ini.isvaluesh(containername + "." + varname)
+}
+
+func (ini *inifile) isvaluesh(fullname string) bool {
+	return (ini.data[fullname] != "")
 }
 
 func (ini *inifile) getcontainer(containername string) map[string]string {
@@ -84,6 +98,15 @@ func (ini *inifile) getcontainer(containername string) map[string]string {
 		}
 	}
 	return returnMap
+}
+
+func (ini *inifile) iscontainer(containername string) bool {
+	for key := range ini.data {
+		if strings.HasPrefix(key, containername+".") {
+			return true
+		}
+	}
+	return false
 }
 
 func (ini *inifile) getmap() map[string]string {
